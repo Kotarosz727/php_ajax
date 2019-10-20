@@ -1,7 +1,5 @@
 <?php
 
-//database_connection.php
-
-$connect = new PDO("mysql:host=localhost;dbname=chat", "root", "");
+$connect = new PDO("mysql:host=db;dbname=chat", "root", "password");
 
 ?>

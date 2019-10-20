@@ -24,7 +24,7 @@ if(isset($_POST["login"])){
   if($count>0){
     $result=$statement->fetchAll();
     foreach($result as $row){
-      if(password_verify($_POST["password"], $row["password"])){
+      if($_POST["password"] == $row["password"]){
         $_SESSION["user_id"]=$row["user_id"];
         $_SESSION["username"]=$row["username"];
         $sub_query="
