@@ -38,7 +38,7 @@ foreach($result as $row){
   }
   $output .= '
   <tr>
-  <td>'.$row['username'].'</td>
+  <td>'.$row['username'].' '.count_unseen_message($row['user_id'], $_SESSION['user_id'], $connect).'</td>
   <td>'.$status.'</td>
   <td><button type="button" class="btn btn-info btn-xs start_chat" data-touserid="'.$row['user_id'].'" data-tousername="'.$row['username'].'">Start Chat</button></td>
   </tr>

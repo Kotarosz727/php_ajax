@@ -28,7 +28,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect){
     AND to_user_id = '".$from_user_id."')
     ORDER BY timestamp DESC
   ";
-  echo $query;
+  
   $statement = $connect->prepare($query);
   $statement -> execute();
   $result = $statement->fetchALL();
@@ -53,6 +53,15 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect){
     
   }
   $output .= '</ul>';
+  $query = "
+    UPDATE chat_message
+    SET status = '0'
+    WHERE from_user_id = '".$to_user_id."'
+    AND to_user_id = '".$from_user_id."'
+    AND status = '1'
+  ";
+  $statement = $connect->prepare($query);
+  $statement->execute();
   return $output;
   }
 
@@ -64,6 +73,24 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect){
     foreach($result as $row){
       return $row['username'];
     }
+  }
+
+  function count_unseen_message($from_user_id, $to_user_id, $connect){
+    $query = "
+      SELECT * FROM chat_message
+      WHERE from_user_id = '$from_user_id'
+      AND to_user_id = '$to_user_id'
+      AND status = '1'
+    ";
+
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $count = $statement->rowCount();
+    $output = '';
+    if($count>0){
+      $output = '<span class="label label-success">'.$count.'</span>';
+    }
+    return $output;
   }
 
 
