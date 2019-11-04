@@ -25,8 +25,10 @@ if(isset($_POST["login"])){
     $result=$statement->fetchAll();
     foreach($result as $row){
       if($_POST["password"] == $row["password"]){
+        //ログインパスワードが正しければ、セッションにuser_idとuser_nameを格納
         $_SESSION["user_id"]=$row["user_id"];
         $_SESSION["username"]=$row["username"];
+        //ログインしたら,login_detailsテーブルにuser_idを格納➡︎login_detaild_idにそのIDを格納
         $sub_query="
         INSERT INTO login_details
         (user_id)

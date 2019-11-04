@@ -1,7 +1,7 @@
 version: '3'
 services:
   nginx:
-    image: nginx:latest
+    image: nginx:1.15.6
     ports:
       - 8000:80
     volumes:
@@ -15,15 +15,17 @@ services:
     volumes:
       - ./www/html:/var/www/html
     depends_on:
-      - mysql
+      - db
 
-  mysql:
+  db:
     image: mysql:5.7
+    restart: always
     environment:
       MYSQL_DATABASE: sample
-      MYSQL_USER: user
+      MYSQL_USER: root
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: password
+      TZ: "Asia/Tokyo"
     ports:
       - "3306:3306"
     volumes:
@@ -36,11 +38,12 @@ services:
       - PMA_HOST=mysql
       - PMA_USER=root
       - PMA_PASSWORD=password
+    restart: always
     links:
-      - mysql
+      - db
     ports:
       - 8888:80
     volumes:
-     - /sessions  
+     - /sessions
 volumes:
   mysql-data:

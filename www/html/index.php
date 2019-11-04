@@ -26,7 +26,42 @@ if(!isset($_SESSION['user_id']))
       <div class="table-responsive">
         <h4 align="center">Online User</h4>
         <p align="right">Hi - <?php echo $_SESSION['username']; ?> - <a href="logout.php">Logout</a></p>
+        <div id="user_details"></div>
       </div>
     </div>
   </body>  
-</html>  
+</html>
+
+<script>
+  $(document).ready(function(){
+
+    fetch_user();
+
+    setInterval(function(){
+      update_last_activity();
+      fetch_user();
+    }, 5000);
+
+    //同ブラウザ内でログインしていないユーザーを取得、テーブルに表示
+    function fetch_user(){
+      $.ajax({
+        url:"fetch_user.php",
+        method:"POST",
+        success:function(data){
+          $('#user_details').html(data);
+        }
+      })
+    }
+
+    //5000秒おきに、ログインユーザーをチェック
+    function update_last_activity(){
+      $.ajax({
+        url:"update_last_activity.php",
+        success:function(){
+          
+        }
+      })
+    }
+
+  });
+</script>
