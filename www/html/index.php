@@ -8,6 +8,8 @@ if(!isset($_SESSION['user_id']))
 {
  header('location:login.php');
 }
+
+
 ?>
 
 <html>  
@@ -44,7 +46,7 @@ if(!isset($_SESSION['user_id']))
       update_chat_history_data();
     }, 5000);
 
-    //同ブラウザ内でログインしていないユーザーを取得、テーブルに表示
+    //５秒毎にfetch_user.phpページをrun
     function fetch_user(){
       $.ajax({
         url:"fetch_user.php",
@@ -72,7 +74,7 @@ if(!isset($_SESSION['user_id']))
       modal_content += fetch_user_chat_history(to_user_id);
       modal_content += '</div>';
       modal_content += '<div class="form-group">';
-      modal_content += '<textarea name="chat_message_'+to_user_id+'" id="chat_message_'+to_user_id+'" class="form_control"></textarea>';
+      modal_content += '<textarea name="chat_message_'+to_user_id+'" id="chat_message_'+to_user_id+'" class="chat_message"></textarea>';
       modal_content += '</div><div class="form-group" align="right">';
       modal_content += '<button type="button" name="send_chat" id="'+to_user_id+'" class="btn btn-info send_chat">Send</button></div></div>';
       $('#user_modal_details').html(modal_content);
@@ -98,7 +100,7 @@ if(!isset($_SESSION['user_id']))
       $.ajax({
         url:"insert_chat.php",
         method:"POST",
-        data: {to_user_id:to_user_id, chat_message:chat_message},
+        data:{to_user_id:to_user_id, chat_message:chat_message},
         success:function(data){
           $('#chat_message_'+to_user_id).val('');
           $('#chat_history_'+to_user_id).html(data);
@@ -126,6 +128,30 @@ if(!isset($_SESSION['user_id']))
 
     $(document).on('click', '.ui-button-icon', function(){
       $('.user_dialog').dialog('destroy').remove();
+    });
+
+    $(document).on('focus', '.chat_message', function(){
+      var is_type = 'yes';
+      $.ajax({
+        url:"update_is_type.php",
+        method:"POST",
+        data:{is_type:is_type},
+        success:function(data){
+          
+        }
+      })
+    });
+
+    $(document).on('blur', '.chat_message', function(){
+      var is_type = 'no';
+      $.ajax({
+        url:"update_is_type.php",
+        method:"POST",
+        data:{is_type:is_type},
+        success:function(){
+
+        }
+      })
     });
 
   });

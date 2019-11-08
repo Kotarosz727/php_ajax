@@ -36,7 +36,7 @@ if(isset($_POST["login"])){
         ";
         $statement = $connect->prepare($sub_query);
         $statement->execute();
-        $_SESSION['login_detail_id'] = $connect->lastInsertID();
+        $_SESSION['login_details_id'] = $connect->lastInsertID();
         header("location:index.php");
       }else{
         $message = "<label>パスワードが違います</label>";

@@ -93,6 +93,24 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $connect){
     return $output;
   }
 
+  function fetch_is_type_status($user_id, $connect){
+    $query = "
+      SELECT is_type FROM login_details
+      WHERE user_id = '".$user_id."'
+      ORDER BY last_activity DESC
+      LIMIT 1
+    ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $output = "";
+    foreach($result as $row){
+      if($row['is_type']=='yes'){
+        $output = ' - <small><em><span class="text-muted">入力中</span></em></small>';
+      }
+    }
+    return $output;
+  }
 
 
 ?>
