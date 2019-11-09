@@ -1,6 +1,6 @@
 <?php
 
-$connect = new PDO("mysql:host=db;dbname=chat", "root", "password");
+$connect = new PDO("mysql:host=db;dbname=chat;charset=utf8mb4", "root", "password");
 
 //ユーザーのログイン時間を取得
 function fetch_user_last_activity($user_id, $connect){
